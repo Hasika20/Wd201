@@ -50,3 +50,10 @@ http.createServer((req, res) => {
 .listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+// console.log('Hello 1');
+
+// setTimeout(function() {
+//     console.log('Hello 2');
+// }, 100);
+// console.log('hello3');
