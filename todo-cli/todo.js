@@ -24,29 +24,13 @@ const todoList = () => {
       return all.filter((item) => item.dueDate > today);
     };
   
-    const toDisplayableList = (list) => {
-      let displayableList = "";
-  
-      if (list.length === 0) return displayableList;
-  
-      const formattedDate = (date) => {
-        const parts = date.split("-");
-        return `${parts[0]}-${parts[1]}-${parts[2]}`;
-      };
-  
-      list.forEach((item) => {
-        const formattedDueDate =
-          item.dueDate === new Date().toISOString().split("T")[0]
-            ? ""
-            : ` ${formattedDate(item.dueDate)}`;
-  
-        const status = item.completed ? "[x]" : "[ ]";
-  
-        displayableList += `${status} ${item.title}${formattedDueDate}\n`;
-      });
-  
-      return displayableList;
-    };
+    const toDisplayableList = (list) => list.map((item) => {
+        const today = new Date().toISOString().split("T")[0];
+        const date = new Date(item.dueDate);
+        const formattedDate = date.toISOString().split("T")[0];
+        const completion = item.completed ? "[x]" : "[ ]";
+        return `${completion} ${item.title}${date.getDate() === today ? "" : ` ${formattedDate}`}`;
+      }).join("\n");
   
     return {
       all,
