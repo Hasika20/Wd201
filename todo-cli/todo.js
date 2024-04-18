@@ -25,7 +25,7 @@ const todoList = () => {
     };
   
     const toDisplayableList = (list) => list.map((item) => {
-        const today = new Date().toISOString().split("T")[0];
+        const today = new Date().getDate()
         const date = new Date(item.dueDate);
         const formattedDate = date.toISOString().split("T")[0];
         const completion = item.completed ? "[x]" : "[ ]";
