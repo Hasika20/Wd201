@@ -1,6 +1,2 @@
-#!/use/bin/env sh
-. "$(dirname -- "$0")/_/husly.sh"
-
-
 cd todo-cli && npm test
 npx lint-staged
