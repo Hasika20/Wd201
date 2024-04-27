@@ -18,16 +18,16 @@ module.exports = (sequelize, DataTypes) => {
     static getTodos() {
       return this.findAll();
     }
-    static async overdue() {
-      return this.findAll({
-        where: {
-          dueDate: {
-            [Sequelize.Op.lt]: new Date(),
-          },
-          completed: false,
-        },
-      });
-    }
+    // static async overdue() {
+    //   return this.findAll({
+    //     where: {
+    //       dueDate: {
+    //         [Sequelize.Op.lt]: new Date(),
+    //       },
+    //       completed: false,
+    //     },
+    //   });
+    // }
     markAsCompleted() {
       return this.update({ completed: true });
     }
