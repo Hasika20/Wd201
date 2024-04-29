@@ -3,23 +3,30 @@ const app = express();
 const { Todo } = require("./models");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
 const path = require("path");
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "ejs");
 
 app.get("/", async (request, response) => {
+  const overdue = await Todo.overdue();
+  const dueToday = await Todo.dueToday();
+  const dueLater = await Todo.dueLater();
   const allTodos = await Todo.getTodos();
   if (request.accepts("html")) {
     response.render("index", {
+      title: "Todo application",
+      overdue,
+      dueToday,
+      dueLater,
       allTodos,
     });
   } else {
-    response.json({
-      allTodos,
-    });
+    response.json(overdue, dueLater, dueToday);
   }
 });
-
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/todos", async function (request, response) {
@@ -50,8 +57,11 @@ app.get("/todos/:id", async function (request, response) {
 
 app.post("/todos", async function (request, response) {
   try {
-    const todo = await Todo.addTodo(request.body);
-    return response.json(todo);
+    await Todo.addTodo({
+      title: request.body.title,
+      dueDate: request.body.dueDate,
+    });
+    return response.redirect("/");
   } catch (error) {
     console.log(error);
     return response.status(422).json(error);
@@ -77,14 +87,10 @@ app.delete("/todos/:id", async function (request, response) {
   // Then, we have to respond back with true/false based on whether the Todo was deleted or not.
   // response.send(true)
   try {
-    const deletedTodoCount = await Todo.destroy({
-      where: { id: request.params.id },
-    });
-    const isDeleted = deletedTodoCount > 0;
-    response.send(isDeleted);
+    await Todo.remove(request.params.id);
+    return response.json({ success: true });
   } catch (error) {
-    console.log(error);
-    return response.status(422).json();
+    return response.status(422).json(error);
   }
 });
 
