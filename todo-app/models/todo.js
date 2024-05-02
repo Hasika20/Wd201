@@ -30,10 +30,6 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    // deleteTodo() {
-    //   return this.removetask(id);
-    // }
-
     static async dueToday() {
       return this.findAll({
         where: {
