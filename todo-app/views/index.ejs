@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         function updateTodo(id) {
-            fetch(`/todos/${id}/markAsCompleted`, {
+            fetch(`/todos/${id}`, {
                 method: "put",
                 headers: {"Content-Type": "application/json" },
             })
